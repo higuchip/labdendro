@@ -9,7 +9,8 @@
 # Departamento de Engenharia Florestal
 # Universidade do Estado de Santa Catarina
 # Contato: higuchip [at] gmail.com
-# Observação: Caso tenha sido útil em seu trabalho, favor citá-la
+# Observação 1: Comentários, sugestões e adequações são bem vindos
+# Observação 2: Caso tenha sido útil em seu trabalho, favor citá-la
 #-------------------------------------------------------------------------------------------------------------------------
 
 library(picante)
