@@ -29,6 +29,8 @@
 # DAP2 (DAP no ano 2)                                   
 # b) arquivo exemplo de entrada, disponível em https://www.dropbox.com/s/snnco7rkpl22mp2/dados_exemplo.xlsx?dl=0
 # c) O argumento t, representa o tempo entre inventários  		     
+#
+#Caso tenha dúvidas, sugestões ou queira contribuir, entre em contato: higuchip@gmail.com
 #----------------------------------------------------------------------------------------------------------------------
 
 
@@ -212,3 +214,8 @@ write.table(dinamica[[4]], file = "dinamica_ab_especies.csv", row.names = TRUE, 
 write.table(dinamica[[3]], file = "dinamica_ab_parcelas.csv", row.names = TRUE, dec=",", sep=";", quote=FALSE)
 
 }
+
+#FIM
+#Aplicação
+#din<-read.table("dados_exemplo.csv", header = T, sep=";", dec=",")
+#forest.din(din,5), onde o primeiro argumento representa o arquivo com os dados de dinâmica e o segundo argumento o tempo entre inventrios
