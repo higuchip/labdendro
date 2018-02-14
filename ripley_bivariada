@@ -1,0 +1,88 @@
+#-----------------------------------------------------------------------------------------------#
+#Script do R utilizado no artigo "HIGUCHI, Pedro et al. Associações espaciais entre indivíduos  #
+#de diferentes espécies de Miconia spp. Ruiz & Pav.(Melastomataceae). Revista Árvore, v. 35,    #
+# n. 3, p. 381-389, 2011"                                                                       #
+#Por: Pedro Higuchi, 18/03/2014                                                                 #
+#-----------------------------------------------------------------------------------------------#
+
+#Passo 1: Carregar a biblioteca necessária para a análise
+
+library(splancs)
+
+
+#Passo 2: Importar dados no formato csv 
+
+#arquivo de três colunas, contendo os indivíduos das diferentes espécies de Miconia (coluna 1), com suas respectivas coordenadas #x e y (colunas 2 e #3). 
+
+comu.mic<-read.table("miconia1.csv", header=T, dec=",", sep=";")
+comu.mic
+summary(comu.mic)
+
+#arquivo que delimita o poligono onde ocorre as populações
+
+borda<-read.table("borda.txt", header=T)
+
+
+#Passo 3: Fazer o sub-set das populações. Este passo não é necessário se as populações de Miconia forem importadas separadamente, no passo 2
+
+
+mic.pep<- comu.mic[comu.mic[,1]=="Mic.pepe",1:3] 
+mic.sel<- comu.mic[comu.mic[,1]=="Mic.sell",1:3]
+mic.arg<- comu.mic[comu.mic[,1]=="Mic.argy",1:3]
+mic.alb<- comu.mic[comu.mic[,1]=="Mic.albi",1:3]
+mic.cha<- comu.mic[comu.mic[,1]=="Mic.char",1:3]
+mic.cin<- comu.mic[comu.mic[,1]=="Mic.cinn",1:3]
+
+
+#Passo 4: Transformar os dados importados no formato utilizado pela biblioteca Splancs
+
+mic.pep.pts<-as.points(mic.pep[,2:3])
+mic.sel.pts<-as.points(mic.sel[,2:3])
+mic.alb.pts<-as.points(mic.alb[,2:3])
+mic.arg.pts<-as.points(mic.arg[,2:3])
+mic.cha.pts<-as.points(mic.cha[,2:3])
+mic.cin.pts<-as.points(mic.cin[,2:3])
+
+
+#Passo 5: Plotar a distribuição espacial dos indivíduos na área
+
+plot(mic.pep.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5) 
+lines(borda) # plota o poligono onde os individuos ocorrem
+
+plot(mic.sel.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5)
+lines(borda)
+
+plot(mic.alb.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5)
+lines(borda)
+
+plot(mic.arg.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5)
+lines(borda)
+
+plot(mic.cha.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5)
+lines(borda)
+
+plot(mic.cin.pts, pch=20, cex=.5, ylim=c(-80,80), xlim=c(0,160), xlab="Coordenada x (m)" , ylab="Coordenada y (m)", font=6, font.axis=6, font.lab=6, las=1,  cex.lab=1.5, cex.axis=1.5)
+lines(borda)
+
+
+
+#Passo 6: Calculo da Função K Bivariada e plotagem do padrão de distribuição espacial (Comparação aos pares, com exemplo para Miconia chartacea e #Miconia cinerascens.
+
+# Determina o comprimento máximo do raio (100m) e respectivos intervalos (5m). Estes valores são determinados em função poligono (borda)
+
+s<-seq(0,100,5) 
+
+#mic.cha.pts x mic.cin.pts
+
+plot(s, sqrt(k12hat(mic.cha.pts, mic.cin.pts,borda, s)/pi) - s, xlab="Distância", ylab=expression(hat(L)[12]), ylim=c(-20,20), type="l",font.axis=2, font.lab=2, cex.lab=1.4,cex.axis=1.4,las=1 )
+
+#determina envelope de completa independencia espacial
+
+envelope <- Kenv.tor(mic.cha.pts, mic.cin.pts, as.points(borda), nsim=999, s) 
+
+# plota o envelope de indenpendencia espacial
+
+lines(s, sqrt(envelope$upper/pi)-s, lty=2)
+lines(s, sqrt(envelope$lower/pi)-s, lty=2)
+
+
